@@ -1,0 +1,82 @@
+/* =================== ARGO+ =================== */
+.plus{padding:0 var(--gutter) clamp(64px,9vw,120px)}
+/* sottotitolo fra "Come funziona" e il riquadro ARGO+: centrato, con lo stesso spazio sopra (fondo di .how) e sotto */
+.plus-intro{margin:0 auto;padding:clamp(48px,7vw,100px) 0;max-width:900px;font-weight:400;font-size:clamp(15px,1.4vw,20px);line-height:1.5;letter-spacing:-.02em;text-align:center;color:var(--ink)}
+.plus-intro b{font-weight:400}
+.plus-intro span{display:block;color:#2fbf72}
+.plus-card{position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) minmax(0,1fr);align-items:center;gap:clamp(20px,3vw,48px);min-height:clamp(540px,46vw,700px);padding:clamp(32px,4vw,64px) clamp(28px,4.5vw,76px) 0;border-radius:0;background:#07110c;color:#e8f1eb;box-shadow:0 40px 90px -40px rgba(7,17,12,.55)}
+.rain{position:absolute;inset:0;z-index:-2;width:100%;height:100%;opacity:.6;-webkit-mask-image:radial-gradient(ellipse 34% 46% at 50% 50%,transparent 0,rgba(0,0,0,.35) 55%,#000 100%);mask-image:radial-gradient(ellipse 34% 46% at 50% 50%,transparent 0,rgba(0,0,0,.35) 55%,#000 100%)}
+.plus-glow{position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 36% 46% at 50% 46%,rgba(31,157,90,.38),transparent 70%),radial-gradient(ellipse 60% 40% at 50% 112%,rgba(212,242,90,.14),transparent 70%),linear-gradient(90deg,rgba(7,17,12,.75),transparent 30%,transparent 70%,rgba(7,17,12,.75));box-shadow:inset 0 0 0 1px rgba(201,247,220,.08),inset 0 0 140px rgba(0,0,0,.6)}
+
+/* funzioni a sinistra, con il filo che arriva dal monitor */
+.plus-feats{list-style:none;margin:0 0 clamp(70px,7vw,110px);padding:0;display:flex;flex-direction:column;gap:clamp(30px,4vw,56px);align-self:center}
+.plus-feats li{display:grid;grid-template-columns:auto auto minmax(24px,1fr);align-items:center;gap:14px}
+.idx{font-size:11px;color:#5fd394}
+.txt{display:flex;flex-direction:column;gap:6px;font-size:clamp(14px,1.15vw,17px);letter-spacing:-.02em;text-shadow:0 1px 12px #07110c}
+.chip{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;padding:2px 9px 2px 7px;border:1px solid rgba(95,211,148,.35);border-radius:20px;font-size:10px;color:#9fe8bd;opacity:0;transform:translateY(4px);transition:opacity .5s ease calc(.9s + var(--i)*.35s),transform .5s ease calc(.9s + var(--i)*.35s)}
+.chip::before{content:"";width:5px;height:5px;border-radius:50%;background:#d4f25a;box-shadow:0 0 8px #d4f25a}
+.plus.seen .chip{opacity:1;transform:none}
+.wire{position:relative;height:1px;margin-right:calc(-1*clamp(20px,3vw,48px) - 1.5vw);background:linear-gradient(90deg,rgba(95,211,148,.5),rgba(95,211,148,.05));transform:scaleX(0);transform-origin:right;transition:transform .9s cubic-bezier(.2,.7,.2,1) calc(var(--i)*.2s)}
+.plus.seen .wire{transform:none}
+.wire i{position:absolute;top:-2px;right:0;width:22px;height:5px;border-radius:5px;background:linear-gradient(90deg,transparent,#c9f7dc);opacity:0;animation:pulse 2.6s cubic-bezier(.5,0,.3,1) infinite;animation-delay:calc(var(--i)*.45s);animation-play-state:paused}
+.plus.run .wire i{animation-play-state:running}
+@keyframes pulse{0%{right:0;opacity:0;transform:scaleX(-1)}10%{opacity:1}80%{opacity:1}100%{right:calc(100% - 22px);opacity:0;transform:scaleX(-1)}}
+
+/* monitor, collo, basamento */
+.rig{position:relative;align-self:end;display:flex;flex-direction:column;align-items:center;padding-top:8px}
+.monitor{position:relative;width:100%;aspect-ratio:16/10;padding:clamp(6px,.7vw,11px);border-radius:0;background:linear-gradient(150deg,#26342c,#060a08 55%,#121a16);box-shadow:0 0 0 1px rgba(201,247,220,.14),0 30px 70px rgba(0,0,0,.6),0 0 110px rgba(31,157,90,.28);transform:perspective(1600px) rotateY(-12deg) rotateX(3deg);transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.plus-card:hover .monitor{transform:perspective(1600px) rotateY(-6deg) rotateX(2deg)}
+.monitor::after{content:"";position:absolute;inset:clamp(6px,.7vw,11px);border-radius:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 1px,transparent 1px 3px),linear-gradient(115deg,rgba(255,255,255,.1),transparent 40%)}
+.screen{display:block;width:100%;height:100%}
+.neck{width:15%;height:clamp(46px,5vw,84px);margin-top:-2px;background:linear-gradient(90deg,#1c2520,#7d8b83 42%,#3a4741 60%,#151c18);clip-path:polygon(14% 0,86% 0,100% 100%,0 100%)}
+.plinth{width:150%;height:clamp(64px,7vw,108px);background:linear-gradient(180deg,rgba(201,247,220,.16),transparent 6px),repeating-linear-gradient(90deg,#050806 0 3px,#18211c 3px 6px);clip-path:polygon(4% 0,96% 0,100% 100%,0 100%);box-shadow:0 -1px 0 rgba(201,247,220,.2)}
+
+/* animazioni dello schermo */
+.screen .bar{transform-box:fill-box;transform-origin:bottom;transform:scaleY(0);transition:transform 1s cubic-bezier(.2,.8,.2,1.08) calc(.35s + var(--i)*.22s)}
+.plus.seen .screen .bar{transform:none}
+.gem{opacity:0;transition:opacity .5s ease 1.3s;animation:bob 2.4s ease-in-out infinite;animation-play-state:paused}
+.plus.seen .gem{opacity:1}
+.plus.run .gem,.plus.run .scr-sweep,.plus.run .scr-cursor,.plus.run .scr-plus{animation-play-state:running}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(9px)}}
+.scr-plus{animation:glowplus 2.4s ease-in-out infinite;animation-play-state:paused}
+@keyframes glowplus{0%,100%{opacity:1}50%{opacity:.62}}
+.scr-tag{font-family:inherit;font-size:15px;fill:#9fe8bd;letter-spacing:-.3px}
+.scr-cursor{animation:caret 1s steps(1) infinite;animation-play-state:paused}
+@keyframes caret{50%{opacity:0}}
+.scr-sweep{animation:sweep 4.5s cubic-bezier(.6,0,.3,1) infinite;animation-play-state:paused}
+@keyframes sweep{0%{transform:translateX(0)}60%,100%{transform:translateX(780px)}}
+
+/* testo a destra */
+.plus-copy{align-self:center}
+.plus-copy h2{margin:0;line-height:0}
+/* logo ARGO+ (public/argo-plus.png) al posto del titolo testuale */
+.plus-logo{display:block;width:clamp(200px,24vw,380px);height:auto;filter:drop-shadow(0 0 22px rgba(39,155,91,.5))}
+.js .plus .plus-logo{opacity:0;transform:translateY(12px) scale(.96)}
+.plus.seen .plus-logo{opacity:1;transform:none;transition:opacity .8s ease .2s,transform .9s cubic-bezier(.2,.7,.2,1) .2s}
+.plus-lead{margin:16px 0 0;font-size:clamp(16px,1.3vw,20px);letter-spacing:-.03em;color:#e8f1eb}
+.plus-text{margin:14px 0 0;max-width:34ch;font-size:14px;line-height:1.6;color:#9fb5a8}
+
+.plus-cap{display:flex;align-items:center;justify-content:center;gap:14px;margin:22px 0 0;font-size:13px;color:var(--muted)}
+.plus-cap::before,.plus-cap::after{content:"";width:36px;height:1px;background:var(--card-line)}
+
+@media (max-width:1100px){
+.plus-card{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"copy feats" "rig rig";row-gap:36px;padding-top:44px}
+.plus-copy{grid-area:copy}.plus-feats{grid-area:feats;gap:26px;margin-bottom:0}.rig{grid-area:rig;width:min(520px,72%);justify-self:center}
+.plus-feats li{grid-template-columns:auto 1fr}
+.wire{display:none}
+.rain{-webkit-mask-image:radial-gradient(ellipse 40% 34% at 50% 72%,transparent 0,#000 90%);mask-image:radial-gradient(ellipse 40% 34% at 50% 72%,transparent 0,#000 90%)}
+}
+@media (max-width:640px){
+.plus-card{grid-template-columns:minmax(0,1fr);grid-template-areas:"copy" "feats" "rig";row-gap:30px;padding:32px 20px 0}
+.rain{opacity:.4}
+.rig{width:92%}
+.monitor{transform:perspective(1200px) rotateY(-8deg) rotateX(2deg)}
+.plinth{width:130%}
+.plus-cap{font-size:12px;text-align:center}
+.plus-cap::before,.plus-cap::after{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+.wire i,.gem,.scr-plus,.scr-cursor,.scr-sweep{animation:none!important}
+.scr-sweep{display:none}
+.screen .bar,.chip,.wire,.gem{transition:none}
+}

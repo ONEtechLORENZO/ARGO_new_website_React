@@ -1,0 +1,52 @@
+/* =================== Footer =================== */
+.site-footer{position:relative;overflow:hidden;padding:clamp(48px,6vw,84px) var(--gutter) clamp(28px,4vw,48px);color:#e8f1eb;background:radial-gradient(ellipse 50% 70% at 12% 100%,rgba(31,157,90,.16),transparent 70%),linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px) 0 0/28px 28px,linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px) 0 0/28px 28px,#07110c}
+.site-footer::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#2fbf72 30%,#2fbf72 70%,transparent);box-shadow:0 0 14px rgba(47,191,114,.6)}
+
+.f-cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px;padding-bottom:clamp(32px,4vw,52px);border-bottom:1px solid rgba(201,247,220,.12)}
+.f-cols h2{margin:0 0 18px;font-weight:500;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#7f948a}
+.f-cols h2.f-gap{margin-top:34px}
+.f-cols ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;font-size:15px;letter-spacing:-.02em}
+.f-cols a{display:inline-block;transition:color .2s ease,transform .2s ease}
+.f-cols a:hover{color:#5fd394;transform:translateX(3px)}
+.f-cols a:focus-visible,.f-logo-link:focus-visible{outline-color:#5fd394}
+.f-cols address{display:flex;flex-direction:column;align-items:flex-start;gap:14px;font-style:normal;font-size:15px;line-height:1.5;letter-spacing:-.02em}
+.f-cols .f-mail{color:#9fb5a8}
+
+/* marchio: logo ARGO + "prodotto di One Tech" */
+.f-brand{display:flex;justify-content:center;align-items:flex-end;flex-wrap:wrap;gap:10px 24px;padding-top:clamp(36px,5vw,64px);text-align:center}
+.f-logo-link{display:block;padding:0}
+.f-logo{display:block;width:clamp(220px,32vw,460px);height:auto;overflow:visible}
+.fl{fill:#2fbf72;transition:fill .3s ease}
+.fd{fill:#1f9d5a;transition:fill .3s ease}
+.f-logo-link:hover .fl{fill:#5fd394}
+.f-logo-link:hover .fd{fill:#2fbf72}
+.f-by{margin:0 0 .25em;font-size:clamp(18px,2vw,28px);letter-spacing:-.04em;color:#e8f1eb}
+.f-by b{font-weight:500;color:#5fd394}
+.f-company{border-bottom:1px solid transparent;transition:border-color .2s ease}
+.f-company:hover{border-color:#5fd394}
+.f-company:focus-visible{outline-color:#5fd394}
+
+/* ingresso: le sfaccettature salgono una alla volta */
+.js .site-footer .f-logo path{opacity:0;transform:translateY(60px)}
+.site-footer.seen .f-logo path{opacity:1;transform:none;transition:opacity .5s ease calc(var(--n)*55ms),transform .8s cubic-bezier(.2,.7,.2,1) calc(var(--n)*55ms),fill .3s ease}
+.js .f-by{opacity:0;transform:translateY(8px)}
+.site-footer.seen .f-by{opacity:1;transform:none;transition:opacity .6s ease .6s,transform .6s ease .6s}
+
+@media (max-width:900px){
+.f-cols{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:40px}
+}
+/* telefoni: Prodotti e Seguici affiancati, i blocchi con indirizzi email lunghi a tutta larghezza */
+@media (max-width:520px){
+.f-cols{grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 20px;padding-bottom:32px}
+.f-cols>:nth-child(n+3){grid-column:1/-1}
+.f-cols h2{margin-bottom:10px}
+.f-cols h2.f-gap{margin-top:24px}
+.f-cols ul{gap:0}
+.f-cols li{display:flex;align-items:center;min-height:38px}
+.f-cols a{padding:8px 0;overflow-wrap:anywhere}
+.f-cols address{gap:2px}
+.f-logo{width:72vw}
+}
+@media (prefers-reduced-motion:reduce){
+.site-footer .f-logo path,.f-by,.f-cols a{transition:none!important}
+}

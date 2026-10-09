@@ -1,0 +1,58 @@
+/* =================== Tema scuro (l'unico del sito) ===================
+   <html data-theme="dark"> è fisso in app/[lang]/layout.tsx. Le sezioni già scure
+   (Come funziona, ARGO+, Perché conviene, Chi siamo, footer) non cambiano: qui si scuriscono
+   le superfici che in globals.css sono definite chiare, ridefinendo i colori di base. */
+
+/* ---------- colori di base ---------- */
+:root[data-theme=dark]{
+  color-scheme:dark;
+  --bg:#0b120e;
+  --ink:#e3ede7;
+  --muted:#93a69b;
+  --line:#223229;
+  --paper:#111b16;
+  --card:#16221c;
+  --card-line:#2a3a31;
+  --night:#152019;
+}
+
+/* hero: alone verde invece che chiaro */
+[data-theme=dark] .glow{background:radial-gradient(closest-side,rgba(31,157,90,.2),rgba(31,157,90,0))}
+
+/* header traslucido scuro */
+[data-theme=dark] .site-header{background:rgba(11,18,14,.78)}
+[data-theme=dark] .site-header.scrolled,[data-theme=dark] .site-header.open{background:rgba(11,18,14,.92);box-shadow:0 12px 30px -22px rgba(0,0,0,.8)}
+[data-theme=dark] .h-lang a:hover{background:#18241d}
+[data-theme=dark] .hl{fill:#2fbf72}
+[data-theme=dark] .hd{fill:#1f9d5a}
+[data-theme=dark] .h-pixel{background:#2fbf72}
+
+/* modulo demo */
+[data-theme=dark] .dm::backdrop{background:rgba(0,0,0,.65)}
+[data-theme=dark] .dm-card{box-shadow:0 40px 100px -30px rgba(0,0,0,.9)}
+[data-theme=dark] .dm-field input:not([type=checkbox]),[data-theme=dark] .dm-field textarea{background:#0d1511;border-color:#2c3d34}
+[data-theme=dark] .dm-field input::placeholder,[data-theme=dark] .dm-field textarea::placeholder{color:#5f7469}
+[data-theme=dark] .dm-consent input{background:#0d1511;border-color:#4a5e53}
+[data-theme=dark] .dm-req,[data-theme=dark] .dm-err{color:#ff7b7b}
+[data-theme=dark] .dm-plan-k,[data-theme=dark] .dm-plan-name span{color:#5fd394}
+[data-theme=dark] .dm-plan{border-color:rgba(47,191,114,.35);background:linear-gradient(90deg,rgba(47,191,114,.12),rgba(47,191,114,.03))}
+
+/* pannello demo: il "gestionale" resta una scheda distinta dal fondo notte */
+[data-theme=dark] .sheet-ui{background:#1c2a22;box-shadow:inset 0 0 0 1px #2e4036}
+[data-theme=dark] .sheet-ui:not(.on){opacity:.45}
+[data-theme=dark] .row{border-bottom-color:#2e4036}
+[data-theme=dark] .note{color:#f0b73c}
+
+/* prezzi (se la sezione è attiva) */
+[data-theme=dark] .tier:hover{background:#142019}
+[data-theme=dark] .tier.featured{background:#13251b}
+[data-theme=dark] .tier.featured h3{color:#5fd394}
+
+/* link e testi verdi su fondo scuro: un verde più chiaro per restare leggibili */
+[data-theme=dark] .more{border-color:#2fbf72}
+[data-theme=dark] .more:hover{color:#5fd394}
+[data-theme=dark] .h-menu li a.on{color:#5fd394}
+[data-theme=dark] .h-menu{box-shadow:0 24px 40px -24px rgba(0,0,0,.8)}
+
+/* sezioni già scure: in tema scuro un bordo sottile le stacca dal fondo */
+[data-theme=dark] .plus-card,[data-theme=dark] .about-card{box-shadow:0 0 0 1px #1d2b23,0 40px 80px -40px rgba(0,0,0,.8)}
