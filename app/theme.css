@@ -32,7 +32,7 @@
 [data-theme=dark] .dm-card{box-shadow:0 40px 100px -30px rgba(0,0,0,.9)}
 [data-theme=dark] .dm-field input:not([type=checkbox]),[data-theme=dark] .dm-field textarea{background:#0d1511;border-color:#2c3d34}
 [data-theme=dark] .dm-field input::placeholder,[data-theme=dark] .dm-field textarea::placeholder{color:#5f7469}
-[data-theme=dark] .dm-consent input{background:#0d1511;border-color:#4a5e53}
+[data-theme=dark] .dm-consent input:not(:checked){background:#0d1511;border-color:#4a5e53}
 [data-theme=dark] .dm-req,[data-theme=dark] .dm-err{color:#ff7b7b}
 [data-theme=dark] .dm-plan-k,[data-theme=dark] .dm-plan-name span{color:#5fd394}
 [data-theme=dark] .dm-plan{border-color:rgba(47,191,114,.35);background:linear-gradient(90deg,rgba(47,191,114,.12),rgba(47,191,114,.03))}
