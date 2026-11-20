@@ -3,14 +3,15 @@
 .site-footer::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#2fbf72 30%,#2fbf72 70%,transparent);box-shadow:0 0 14px rgba(47,191,114,.6)}
 
 .f-cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px;padding-bottom:clamp(32px,4vw,52px);border-bottom:1px solid rgba(201,247,220,.12)}
-.f-cols h2{margin:0 0 18px;font-weight:500;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#7f948a}
+.f-cols h2{margin:0 0 18px;font-weight:500;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#b3c7bb}
 .f-cols h2.f-gap{margin-top:34px}
 .f-cols ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;font-size:15px;letter-spacing:-.02em}
 .f-cols a{display:inline-block;transition:color .2s ease,transform .2s ease}
 .f-cols a:hover{color:#5fd394;transform:translateX(3px)}
 .f-cols a:focus-visible,.f-logo-link:focus-visible{outline-color:#5fd394}
 .f-cols address{display:flex;flex-direction:column;align-items:flex-start;gap:14px;font-style:normal;font-size:15px;line-height:1.5;letter-spacing:-.02em}
-.f-cols .f-mail{color:#9fb5a8}
+.f-cols a,.f-cols address{color:#fff}
+.f-cols .f-mail{color:#fff}
 
 /* marchio: logo ARGO + "prodotto di One Tech" */
 .f-brand{display:flex;justify-content:center;align-items:flex-end;flex-wrap:wrap;gap:10px 24px;padding-top:clamp(36px,5vw,64px);text-align:center}

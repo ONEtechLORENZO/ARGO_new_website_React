@@ -33,6 +33,8 @@ export default function About() {
         <div className="about-copy">
           <p className="about-text">
             <span data-text={t.before}>{t.before}</span>
+            <br />
+            <span data-text={t.more}>{t.more}</span>
             <a href={`mailto:${SITE.email}`}><span data-text={SITE.email}>{SITE.email}</span></a>
             <span data-text={t.after}>{t.after}</span>
           </p>

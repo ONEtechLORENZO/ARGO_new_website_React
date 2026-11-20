@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ARGO · scanner documenti</title>
+<!--
+  ARGO · riquadro "Scansione documento" (animazione) — file unico, senza framework.
+
+  COME USARLO SU UN ALTRO SITO
+  1. Copia i tre tag link del carattere DM Mono (qui sotto) nell'head della tua pagina.
+  2. Copia il blocco style con id "argo-scan-css" nell'head (tutti i nomi iniziano con "argo-scan":
+     non tocca gli altri stili del sito).
+  3. Metti il riquadro dove vuoi:   div class="argo-scan" data-lang="it"  (vedi il body qui sotto)
+     (data-lang="en" per l'inglese; puoi metterne anche più di uno nella stessa pagina).
+  4. Copia lo script con id "argo-scan-js" prima della chiusura del body.
+  Larghezza: il riquadro si adatta al contenitore (massimo 340px; cambia max-width in .argo-scan).
+  Sta bene su fondo scuro (#07110c, il pannello verde-nero di ARGO).
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style id="argo-scan-css">
+/* scudo: gli stili generici del sito che ospita il riquadro (div, p, span…) non entrano qui dentro.
+   Sta prima delle regole del riquadro, che quindi restano valide. */
+.argo-scan,.argo-scan *,.argo-scan *::before,.argo-scan *::after{all:revert;box-sizing:border-box}
+.argo-scan{width:100%;max-width:340px;margin:0;font-family:"DM Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;-webkit-font-smoothing:antialiased;border:1px solid rgba(47,191,114,.32);background:rgba(2,8,5,.78);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);box-shadow:0 0 0 1px rgba(47,191,114,.06) inset,0 24px 50px -24px rgba(0,0,0,.9);font-size:11px;color:#e3ede7}
+.argo-scan-head{display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid rgba(47,191,114,.18);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#9fe8bd}
+.argo-scan-dot{width:6px;height:6px;border-radius:50%;background:#2fbf72;box-shadow:0 0 8px #2fbf72;animation:argoScanBlink 1.1s steps(2,start) infinite}
+.argo-scan-count{margin-left:auto;letter-spacing:.08em;color:#5f7469}
+@keyframes argoScanBlink{to{opacity:.2}}
+.argo-scan-body{display:grid;grid-template-columns:96px minmax(0,1fr);gap:16px;align-items:center;padding:14px 14px 16px}
+
+/* il foglio con gli angoli del mirino */
+.argo-scan-doc{position:relative;padding:7px}
+.argo-scan-c{position:absolute;width:11px;height:11px;border-color:#2fbf72;border-style:solid;filter:drop-shadow(0 0 4px rgba(47,191,114,.7));animation:argoScanLock .5s cubic-bezier(.2,.7,.2,1) both}
+.argo-scan-c.tl{top:0;left:0;border-width:2px 0 0 2px}
+.argo-scan-c.tr{top:0;right:0;border-width:2px 2px 0 0}
+.argo-scan-c.bl{bottom:0;left:0;border-width:0 0 2px 2px}
+.argo-scan-c.br{bottom:0;right:0;border-width:0 2px 2px 0}
+@keyframes argoScanLock{from{opacity:0;transform:scale(1.6)}}
+.argo-scan-paper{position:relative;overflow:hidden;padding:8px 8px 10px;background:#0d1511;border:1px solid #2c3d34}
+.argo-scan-paper b{display:block;font-weight:500;font-size:7.5px;line-height:1.3;letter-spacing:.05em;text-transform:uppercase;overflow-wrap:break-word;color:#5fd394}
+.argo-scan-line{display:block;height:3px;margin-top:7px;background:#24352c;animation:argoScanLit .3s ease forwards;animation-delay:calc(.35s + var(--argo-k)*.22s)}
+@keyframes argoScanLit{to{background:#2fbf72;box-shadow:0 0 6px rgba(47,191,114,.6)}}
+/* il raggio: una riga luminosa con la scia sopra */
+.argo-scan-beam{position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,#c9f7dc 20%,#c9f7dc 80%,transparent);box-shadow:0 0 10px 2px rgba(47,191,114,.75);animation:argoScanBeam 1.8s cubic-bezier(.45,0,.55,1) .2s both}
+.argo-scan-beam::before{content:"";position:absolute;left:0;right:0;bottom:2px;height:26px;background:linear-gradient(to bottom,transparent,rgba(47,191,114,.22))}
+@keyframes argoScanBeam{0%{top:0;opacity:0}8%{opacity:1}90%{opacity:1}100%{top:100%;opacity:0}}
+
+/* i campi letti, uno alla volta, come se venissero digitati */
+.argo-scan-fields{display:flex;flex-direction:column;gap:8px;min-width:0;margin:0}
+.argo-scan-fields div{min-width:0;opacity:0;animation:argoScanIn .35s ease forwards;animation-delay:calc(.8s + var(--argo-n)*.45s)}
+.argo-scan-fields dt{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:#5f7469}
+.argo-scan-fields dd{margin:2px 0 0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:12px;color:#e3ede7;clip-path:inset(0 100% 0 0);animation:argoScanType .6s steps(16,end) forwards;animation-delay:calc(.9s + var(--argo-n)*.45s)}
+@keyframes argoScanIn{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
+@keyframes argoScanType{to{clip-path:inset(0)}}
+.argo-scan-ok{align-self:flex-start;margin:2px 0 0;padding:3px 9px;border:1px solid rgba(47,191,114,.5);background:rgba(47,191,114,.1);font-size:10px;letter-spacing:.06em;color:#5fd394;opacity:0;animation:argoScanIn .35s ease 2.4s forwards}
+.argo-scan *{box-sizing:border-box}
+@media (max-width:420px){
+.argo-scan-body{grid-template-columns:84px minmax(0,1fr);gap:14px;padding:12px}
+}
+@media (prefers-reduced-motion:reduce){
+.argo-scan-dot,.argo-scan-c{animation:none}
+.argo-scan-line{animation:none;background:#2fbf72}
+.argo-scan-beam{display:none}
+.argo-scan-fields div,.argo-scan-ok{animation:none;opacity:1}
+.argo-scan-fields dd{animation:none;clip-path:none}
+}
+</style>
+
+<!-- solo per questa anteprima: fondo scuro e riquadro al centro (sul tuo sito non serve) -->
+<style>
+html,body{margin:0;min-height:100%;background:#07110c}
+body{display:grid;place-items:center;min-height:100vh;padding:24px 16px;background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(31,157,90,.22),transparent 70%),#07110c}
+</style>
+</head>
+<body>
+
+<div class="argo-scan" data-lang="it"></div>
+
+<script id="argo-scan-js">
+(function () {
+  var TEXT = {
+    it: { label: "Scansione documento", done: "Letto", docs: [["Busta paga",[["Dipendente","Mario Rossi"],["Periodo","08/2026"],["Lordo","€ 2.400,00"],["Netto","€ 1.780,00"]]],["Documento d’identità",[["Nome","Mario Rossi"],["Nato il","14/03/1981"],["Numero","CA12345XY"],["Scadenza","14/03/2031"]]],["Contratto",[["Parti","Beta Spa"],["Oggetto","Locazione"],["Durata","4 + 4 anni"],["Canone","€ 900,00"]]],["Fattura",[["Fornitore","Alfa Srl"],["Numero","2026/0412"],["Imponibile","€ 1.250,00"],["IVA","22%"]]],["Modello OBIS-M",[["Pensionato","Anna Bianchi"],["Anno","2026"],["Lordo mensile","€ 1.620,00"],["Netto mensile","€ 1.340,00"]]]] },
+    en: { label: "Scanning document", done: "Read", docs: [["Payslip",[["Employee","Mario Rossi"],["Period","08/2026"],["Gross","€2,400.00"],["Net","€1,780.00"]]],["ID document",[["Name","Mario Rossi"],["Born on","14/03/1981"],["Number","CA12345XY"],["Expiry","14/03/2031"]]],["Contract",[["Party","Beta Spa"],["Subject","Lease"],["Term","4 + 4 years"],["Rent","€900.00"]]],["Invoice",[["Supplier","Alfa Srl"],["Number","2026/0412"],["Taxable","€1,250.00"],["VAT","22%"]]],["OBIS-M form",[["Pensioner","Anna Bianchi"],["Year","2026"],["Monthly gross","€1,620.00"],["Monthly net","€1,340.00"]]]] }
+  };
+  var CYCLE = 5200;                                    /* ms per documento */
+  var LINES = [92, 70, 84, 58, 88, 64, 76];            /* larghezze (%) delle righe del foglio */
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion:reduce)").matches;
+
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+
+  function start(box) {
+    var t = TEXT[box.getAttribute("data-lang") === "en" ? "en" : "it"];
+    var idx = 0;
+    box.setAttribute("aria-hidden", "true");             /* decorativo */
+    box.textContent = "";
+    var head = el("div", "argo-scan-head");
+    head.appendChild(el("span", "argo-scan-dot"));
+    head.appendChild(document.createTextNode(t.label));
+    var count = el("span", "argo-scan-count");
+    head.appendChild(count);
+    box.appendChild(head);
+    var body = el("div", "argo-scan-body");
+    box.appendChild(body);
+
+    function render() {
+      var d = t.docs[idx % t.docs.length];
+      count.textContent = pad(idx % t.docs.length + 1) + "/" + pad(t.docs.length);
+      /* corpo nuovo a ogni documento: le animazioni CSS ripartono da capo */
+      var next = el("div", "argo-scan-body");
+      var doc = el("div", "argo-scan-doc");
+      ["tl", "tr", "bl", "br"].forEach(function (c) { doc.appendChild(el("i", "argo-scan-c " + c)); });
+      var paper = el("div", "argo-scan-paper");
+      paper.appendChild(el("b", null, d[0].replace(/-/g, "\u2011")));   /* "OBIS-M" non si spezza */
+      LINES.forEach(function (w, k) { var s = el("span", "argo-scan-line"); s.style.width = w + "%"; s.style.setProperty("--argo-k", k); paper.appendChild(s); });
+      paper.appendChild(el("span", "argo-scan-beam"));
+      doc.appendChild(paper); next.appendChild(doc);
+      var dl = el("dl", "argo-scan-fields");
+      d[1].slice(0, 3).forEach(function (f, n) { var row = el("div"); row.style.setProperty("--argo-n", n); row.appendChild(el("dt", null, f[0])); row.appendChild(el("dd", null, f[1])); dl.appendChild(row); });
+      dl.appendChild(el("p", "argo-scan-ok", "\u2713 " + t.done));
+      next.appendChild(dl);
+      body.replaceWith(next); body = next;
+    }
+    render();
+    if (!reduce) setInterval(function () { if (!document.hidden) { idx++; render(); } }, CYCLE);
+  }
+
+  function init() { document.querySelectorAll(".argo-scan:not([data-argo-ready])").forEach(function (b) { b.setAttribute("data-argo-ready", ""); start(b); }); }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
+})();
+</script>
+</body>
+</html>

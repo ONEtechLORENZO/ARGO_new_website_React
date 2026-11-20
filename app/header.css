@@ -45,6 +45,13 @@
 .h-lang a:hover{color:var(--ink);background:#f1f7f3}
 .h-lang a.on{background:var(--ink);color:var(--paper);cursor:default}
 
+/* pulsante "Accedi ↗": squadrato e contornato come IT | EN, porta alla pagina di accesso */
+.h-login{display:inline-flex;align-items:center;gap:6px;height:42px;padding:0 14px;border:1px solid var(--line);background:var(--paper);color:var(--ink);font-size:13px;white-space:nowrap;transition:border-color .2s ease,color .2s ease}
+.h-login svg{width:14px;height:14px;color:#5fd394;transition:transform .2s ease}
+.h-login:hover{border-color:var(--green)}
+.h-login:hover svg{transform:translate(2px,-2px)}
+.h-login-menu{display:none;justify-content:center;height:auto;margin-top:10px;padding:14px 20px;font-size:14px}
+
 /* menu mobile */
 .h-burger{display:none;position:relative;width:42px;height:42px;padding:0;border:1px solid var(--line);border-radius:50%;background:var(--paper)}
 .h-burger i{position:absolute;left:12px;right:12px;height:1.5px;border-radius:2px;background:var(--ink);transition:transform .3s ease,top .3s ease}
@@ -82,6 +89,11 @@
 .h-tabs a:hover,.h-tabs a.on{color:var(--ink)}
 .h-tabs a.on::after{transform:none}
 .h-tabs a:focus-visible{outline-offset:-2px}
+}
+/* telefoni: "Accedi" passa nel menu ☰ (in alto non c'è spazio accanto a Contattaci e IT | EN) */
+@media (max-width:640px){
+.h-right .h-login{display:none}
+.h-login-menu{display:flex}
 }
 @media (max-width:480px){
 .h-right .h-cta{display:none}

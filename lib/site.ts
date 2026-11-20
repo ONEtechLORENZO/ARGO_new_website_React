@@ -5,6 +5,9 @@ export const SITE = {
   /* titoli, descrizioni e parole chiave per lingua sono in lib/i18n.ts */
   themeColor: "#0b120e", // fondo del sito (solo tema scuro): barra del browser e manifest
   email: "sales@otech.one",
+  /* pulsante "Accedi" nell'header: piattaforma ARGO (si apre in una nuova scheda).
+     Vuoto = il pulsante apre il modulo "Parla con noi". */
+  appLoginUrl: "https://myargo.otech.one/",
   whatsapp: "393409683934", // +39 340 968 3934 (pulsante WhatsApp fisso in basso a destra)
   street: "Via Gustavo Fara 35",
   postalCode: "20124",

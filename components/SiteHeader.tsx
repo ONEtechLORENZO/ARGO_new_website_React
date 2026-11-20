@@ -3,9 +3,15 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ARGO_LOGO } from "@/lib/argoLogo";
 import { LOCALES, homePath, type Locale } from "@/lib/i18n";
-import { SHOW_PRICING } from "@/lib/site";
+import { SHOW_PRICING, SITE } from "@/lib/site";
 import { DEMO_HASH } from "./DemoModal";
 import { useT } from "./I18n";
+
+/* "Accedi": porta alla login della piattaforma ARGO in una nuova scheda; finché l'indirizzo
+   non è impostato (SITE.appLoginUrl) apre il modulo "Parla con noi" */
+const LOGIN_LINK = SITE.appLoginUrl
+  ? { href: SITE.appLoginUrl, target: "_blank", rel: "noopener noreferrer" }
+  : { href: DEMO_HASH };
 
 const IDS = (["hero", "come-funziona", "argo-plus", "perche-conviene", "prezzi", "chi-siamo"] as const).filter((id) => SHOW_PRICING || id !== "prezzi");
 const HEADER_PIXELS = [
@@ -20,6 +26,15 @@ function Arrow() {
   return (
     <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
       <path d="M4 10h11M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+/* freccia "↗" del pulsante Accedi */
+function LoginArrow() {
+  return (
+    <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+      <path d="M6 14L14 6M7.5 6H14v6.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -219,6 +234,9 @@ export default function SiteHeader() {
       </nav>
 
       <div className="h-right">
+        <a className="h-login" {...LOGIN_LINK}>
+          {t.login} <LoginArrow />
+        </a>
         <LangSwitch current={locale} label={t.lang} />
         <a className="h-cta" href={DEMO_HASH}>
           {t.demo} <Arrow />
@@ -261,6 +279,9 @@ export default function SiteHeader() {
           </ul>
           <a className="h-cta h-cta-menu" href={DEMO_HASH} onClick={() => setOpen(false)}>
             {t.demo} <Arrow />
+          </a>
+          <a className="h-login h-login-menu" {...LOGIN_LINK} onClick={() => setOpen(false)}>
+            {t.login} <LoginArrow />
           </a>
         </nav>
       )}

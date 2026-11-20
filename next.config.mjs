@@ -11,7 +11,13 @@ const nextConfig = {
   },
   /* /it non deve esistere come indirizzo pubblico: niente contenuti duplicati */
   async redirects() {
-    return [{ source: "/it", destination: "/", permanent: true }];
+    return [
+      { source: "/it", destination: "/", permanent: true },
+      /* la vecchia pagina di accesso non esiste più: chi aveva il link torna alla home */
+      { source: "/login", destination: "/", permanent: false },
+      { source: "/it/login", destination: "/", permanent: false },
+      { source: "/en/login", destination: "/en", permanent: false },
+    ];
   },
   async headers() {
     return [

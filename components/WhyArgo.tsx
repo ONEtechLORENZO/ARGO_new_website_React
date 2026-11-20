@@ -46,19 +46,19 @@ export default function WhyArgo() {
           undo.push(decode([...card.querySelectorAll<HTMLElement>("h3 span")], { stagger: 260, dur: 700 }));
           const vals = [...card.querySelectorAll<HTMLElement>(".why-row .val")];
           if (vals.length) undo.push(decode(vals, { delay: 400, stagger: 200, dur: 650 }));
-          /* contatore 0 → 100% dei dati validati */
+          /* contatore 0 → 99% dei dati validati */
           const count = card.querySelector<HTMLElement>(".count");
           if (count) {
             let raf = 0;
             const t0 = performance.now() + 1900;
             const tick = (now: number) => {
               const p = Math.min(1, Math.max(0, (now - t0) / 900));
-              count.textContent = String(Math.round(100 * (1 - Math.pow(1 - p, 3))));
+              count.textContent = String(Math.round(99 * (1 - Math.pow(1 - p, 3))));
               if (p < 1) raf = requestAnimationFrame(tick);
             };
             count.textContent = "0";
             raf = requestAnimationFrame(tick);
-            undo.push(() => { cancelAnimationFrame(raf); count.textContent = "100"; });
+            undo.push(() => { cancelAnimationFrame(raf); count.textContent = "99"; });
           }
         }),
       );
@@ -121,7 +121,7 @@ export default function WhyArgo() {
             <div>
               <small>{t.quality}</small>
               <strong>{t.qualityTitle}</strong>
-              <em>{t.qualityErrors} · <span className="count">100</span>{t.qualityValid}</em>
+              <em>{t.qualityErrors} · <span className="count">99</span>{t.qualityValid}</em>
             </div>
           </div>
         </article>

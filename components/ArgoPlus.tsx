@@ -33,7 +33,7 @@ export default function ArgoPlus() {
     <section className="plus" id="argo-plus" aria-labelledby="plus-title" ref={ref}>
       {/* sottotitolo fra "Come funziona" e ARGO+: non solo lettura */}
       <p className="plus-intro">
-        <b>{t.intro[0]} <span>{t.intro[1]}</span></b>
+        <b>{t.intro}</b>
       </p>
       <div className="plus-card">
         <MatrixRain className="rain" />
