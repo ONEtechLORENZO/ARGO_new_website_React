@@ -86,9 +86,9 @@ export default function SiteFooter() {
           </svg>
         </a>
         <p className="f-by">
-          {f.by}{" "}
+          <span className="f-by-t">{f.by}</span>{" "}
           <a className="f-company" href="https://www.otech.one/" target="_blank" rel="noopener noreferrer">
-            <b><span data-text="One Tech">One Tech</span></b>
+            <img className="f-ot" src="/one-tech-logo.png" alt="One Tech" width={480} height={239} loading="lazy" decoding="async" />
           </a>
         </p>
       </div>

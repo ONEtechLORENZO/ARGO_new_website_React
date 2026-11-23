@@ -104,3 +104,24 @@
 .h-ind,.h-menu,.h-menu li,.h-scanner,.h-scanner *,.h-tabs a,.h-tabs a::after{transition:none;animation:none!important}
 .h-scanner.is-scanning{box-shadow:none}
 }
+
+/* logo ARGO + "prodotto di [logo One Tech]": accanto al logo su schermi larghi, sotto su telefono */
+.h-brand{justify-self:start;display:flex;align-items:flex-end;gap:12px;min-width:0}
+.h-by{display:flex;align-items:flex-end;gap:7px;padding:6px 0;font-size:12px;line-height:1;white-space:nowrap;color:var(--muted);transition:color .2s ease}
+.h-by img{display:block;width:auto;height:22px}
+.h-by-t{display:block;line-height:1;margin-bottom:-.2em} /* linea di base sul fondo delle lettere ARGO */
+.h-by:hover{color:var(--ink)}
+.h-by:focus-visible{outline-offset:3px}
+@media (max-width:640px){
+.h-brand{flex-direction:column;align-items:flex-start;gap:3px}
+.h-logo{padding:0}
+.h-by{gap:5px;padding:2px 0;font-size:10px}
+.h-by img{height:15px}
+}
+/* header su due righe (≤1100px): il blocco logo resta in alto a sinistra */
+@media (max-width:1100px){.h-brand{grid-row:1;grid-column:1}}
+/* desktop stretto: fra logo e menu c'è poco spazio, resta solo il logo One Tech */
+@media (min-width:1101px) and (max-width:1380px){
+.h-by span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.h-brand{gap:10px}
+}

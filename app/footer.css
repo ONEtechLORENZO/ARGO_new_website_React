@@ -51,3 +51,12 @@
 @media (prefers-reduced-motion:reduce){
 .site-footer .f-logo path,.f-by,.f-cols a{transition:none!important}
 }
+
+/* logo One Tech al posto della scritta, allineato alla riga "prodotto di" */
+/* "prodotto di [One Tech]" a metà altezza delle lettere ARGO; la scritta a metà del logo One Tech */
+.f-brand{align-items:center}
+.f-by{display:flex;align-items:center;gap:.55em;margin:0;line-height:1}
+.f-by-t{display:block;line-height:1}
+.f-company{display:block;line-height:0;border-bottom:0}
+.f-ot{display:block;width:auto;height:1.7em;transition:opacity .2s ease}
+.f-company:hover .f-ot{opacity:.85}
