@@ -13,6 +13,7 @@
 @media (max-width:350px){.h-tabs a{font-size:10.5px;letter-spacing:0}}
 
 /* aree di tocco */
+.h-brand .h-logo{display:flex;align-items:center;min-height:44px}
 .more{display:inline-flex;align-items:flex-end;min-height:44px}
 .f-cols li{min-height:44px}
 .f-cols a{padding:12px 0}
