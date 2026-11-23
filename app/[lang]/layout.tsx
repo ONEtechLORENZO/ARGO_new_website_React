@@ -13,6 +13,7 @@ import "../footer.css";
 import "../header.css";
 import "../form.css";
 import "../theme.css";
+import "../mobile.css";
 
 const dmMono = localFont({
   src: [
