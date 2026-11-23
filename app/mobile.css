@@ -1,0 +1,29 @@
+/* =================== ritocchi per telefono (≤640px) ===================
+   Caricato per ultimo: testi minimi a 12px, aree di tocco ≥44px, niente contenuti sotto il
+   pulsante WhatsApp. Il layout desktop non cambia. */
+@media (max-width:640px){
+/* testi piccoli: almeno 12px */
+.eyebrow,.num,.kick,.idx,.chip,.doc-types li,.demo-label,.sheet-head,.row,.flag,.note,
+.why-meta,.why-slash,.why-foot,.why-row,.val,.why-box em,.why-pipe li,.why-index,
+.field dt,.lower,.now,.f-cols h2,.dm-tag,.dm-n,.dm-plan-k,.dm-plan-rows dt{font-size:12px}
+.why-slash,.why-meta,.f-cols h2{letter-spacing:.1em}
+
+/* schede di sezione sotto l'header: un po' più grandi, ma tutte visibili anche a 360px */
+.h-tabs a{font-size:clamp(11.5px,3.15vw,13px);letter-spacing:.01em}
+@media (max-width:350px){.h-tabs a{font-size:10.5px;letter-spacing:0}}
+
+/* aree di tocco */
+.h-logo{display:flex;align-items:center;min-height:44px}
+.more{display:inline-flex;align-items:flex-end;min-height:44px}
+.f-cols li{min-height:44px}
+.f-cols a{padding:12px 0}
+.about-text a,.f-company{padding:10px 0;margin:-10px 0}
+
+/* modulo: 16px nei campi, altrimenti l'iPhone ingrandisce la pagina quando si tocca un campo */
+.dm input:not([type=checkbox]),.dm select,.dm textarea{font-size:16px}
+/* i campi partono in alto, senza il vuoto sopra; "Avanti" resta in fondo */
+.dm-body{margin:0 0 auto;padding-top:8px}
+
+/* spazio in fondo: l'ultima riga del footer non finisce sotto il pulsante WhatsApp */
+.site-footer{padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+}
