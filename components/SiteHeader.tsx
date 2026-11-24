@@ -110,7 +110,7 @@ export default function SiteHeader() {
   const header = useRef<HTMLElement>(null);
   const nav = useRef<HTMLUListElement>(null);
   const tabs = useRef<HTMLUListElement>(null);
-  const logo = useRef<HTMLAnchorElement>(null);
+  const logo = useRef<HTMLDivElement>(null);
   const scanner = useRef<HTMLDivElement>(null);
   const scrollTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastScrollY = useRef(0);
@@ -193,15 +193,22 @@ export default function SiteHeader() {
     <header ref={header} className={"site-header" + (scrolled ? " scrolled" : "") + (open ? " open" : "")}>
       <a className="skip" href="#contenuto">{t.skip}</a>
 
-      <a ref={logo} className="h-logo" href="#hero" aria-label={t.home}>
-        <svg viewBox="0 0 3406 801" aria-hidden="true" focusable="false">
-          {ARGO_LOGO.map(([x, paths]) => (
-            <g key={x} transform={`translate(${x},0)`}>
-              {paths.map(([tone, d]) => <path key={d} d={d} className={tone === "l" ? "hl" : "hd"} />)}
-            </g>
-          ))}
-        </svg>
-      </a>
+      {/* logo ARGO + "prodotto di One Tech" (su telefono va sotto il logo, più piccolo) */}
+      <div ref={logo} className="h-brand">
+        <a className="h-logo" href="#hero" aria-label={t.home}>
+          <svg viewBox="0 0 3406 801" aria-hidden="true" focusable="false">
+            {ARGO_LOGO.map(([x, paths]) => (
+              <g key={x} transform={`translate(${x},0)`}>
+                {paths.map(([tone, d]) => <path key={d} d={d} className={tone === "l" ? "hl" : "hd"} />)}
+              </g>
+            ))}
+          </svg>
+        </a>
+        <a className="h-by" href="https://www.otech.one/" target="_blank" rel="noopener noreferrer">
+          <span className="h-by-t">{t.by}</span>
+          <img src="/one-tech-logo.png" alt="One Tech" width={480} height={239} decoding="async" />
+        </a>
+      </div>
 
       <div
         ref={scanner}

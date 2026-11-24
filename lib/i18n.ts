@@ -47,6 +47,7 @@ const it = {
     /* riga delle sezioni su telefono: etichette brevi così ci stanno tutte */
     tabs: { hero: "Home", "come-funziona": "Come funziona", "argo-plus": "ARGO+", "perche-conviene": "Vantaggi", prezzi: "Piani", "chi-siamo": "Chi siamo" },
     demo: "Contattaci",
+    by: "prodotto di",
     login: "Accedi",
     skip: "Vai al contenuto",
     home: "ARGO, torna all’inizio",
@@ -281,6 +282,7 @@ const en: Dict = {
     links: { hero: "Home", "come-funziona": "How it works", "argo-plus": "ARGO+", "perche-conviene": "Why it pays off", prezzi: "Plans", "chi-siamo": "About us" },
     tabs: { hero: "Home", "come-funziona": "How it works", "argo-plus": "ARGO+", "perche-conviene": "Benefits", prezzi: "Plans", "chi-siamo": "About us" },
     demo: "Contact us",
+    by: "a product of",
     login: "Log in",
     skip: "Skip to content",
     home: "ARGO, back to top",
