@@ -255,8 +255,9 @@ export default function DemoModal() {
                 )}
               </div>
 
-              {/* campo trappola per i bot, invisibile alle persone */}
-              <input ref={honeypot} className="dm-hp" type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" />
+              {/* campo trappola per i bot, invisibile alle persone. Nome senza significato: con name="website"
+                  il riempimento automatico del browser lo compilava e la richiesta veniva scartata in silenzio */}
+              <input ref={honeypot} className="dm-hp" type="text" name="dm_hp_x7" tabIndex={-1} autoComplete="new-password" aria-hidden="true" />
 
               {status === "fail" && <p className="dm-err dm-fail" role="alert">{t.failText}</p>}
               </div>
