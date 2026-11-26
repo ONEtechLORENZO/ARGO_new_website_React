@@ -18,7 +18,10 @@ export async function POST(req: Request) {
   }
 
   /* campo trappola per i bot: un utente vero non lo vede e non lo compila */
-  if (body.website) return NextResponse.json({ ok: true });
+  if (body.website) {
+    console.warn("[demo] scartata dal campo trappola (compilato):", String(body.website).slice(0, 60));
+    return NextResponse.json({ ok: true });
+  }
 
   const data: DemoData = {
     company: String(body.company ?? ""),

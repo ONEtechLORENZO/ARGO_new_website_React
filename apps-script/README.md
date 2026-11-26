@@ -31,6 +31,16 @@ Fare tutto **con l'account Google da cui devono partire le email** (idealmente s
 
 Fatto: da ora ogni richiesta inviata dal sito arriva via email.
 
+## CRM vtiger (facoltativo)
+
+Dopo le due email lo script invia la richiesta anche al workflow di vtiger (crm.otech.one).
+
+1. **Impostazioni progetto** → **Proprietà script** → aggiungi `VTIGER_HANDLER_URL` = l'indirizzo `https://crm.otech.one/shorturl.php?id=…&workflow_id=29` del workflow.
+2. Esegui **`testCrm`** dall'editor: manda al CRM solo un lead di prova (nessuna email). Controlla in vtiger che il lead "Alfa Srl (TEST)" sia arrivato con i campi giusti, poi cancellalo.
+3. Pubblica una **nuova versione** del deployment (vedi Note).
+
+I campi sono inviati come modulo con i nomi letti dal workflow 29 "HTTP CREATE LEADS", gli stessi dello script KORE: `name`, `last_name`, `Email`, `telefono`, `tel`, `company`, `description` (settore, ruolo, interesse, piano, messaggio) e `source` = `Argowebsite`. Il valore `Argowebsite` deve esistere nella tabella SORGENTE SITO del CRM. Meglio una Permission Entry dedicata ad ARGO nell'HTTP Handler (Workflow Designer → Settings HTTP Handler), invece di riusare la chiave di KORE. Se il CRM non risponde le email partono comunque; l'errore si vede in **Esecuzioni**. Senza la proprietà il passaggio è saltato.
+
 ## Note
 
 - **Modifiche allo script**: dopo ogni modifica serve *Esegui il deployment → Gestisci deployment → Modifica → Nuova versione*, altrimenti l'URL continua a usare la versione precedente.

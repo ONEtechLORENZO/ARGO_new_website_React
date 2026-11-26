@@ -17,6 +17,8 @@ const CONFIG = {
   CUSTOMER_REPLY_TO: 'sales@otech.one',   // se il cliente risponde alla conferma, scrive a sales
   MAX_PER_EMAIL: 3,                        // massimo richieste per indirizzo...
   WINDOW_SECONDS: 600,                     // ...ogni 10 minuti (anti-abuso)
+  CRM_LEAD_SOURCE: 'Argowebsite',          // valore esatto: deve esistere nella tabella SORGENTE SITO del CRM
+  CRM_FORM_NAME: 'SITO ARGO',              // intestazione della descrizione del lead
   IMAGES: {
     customerHeader: 'https://0wlrsgrnxygpaqsuekgapipp_non2jhzqw6lly0gr6o.canva-cdn.email/c75be37ba232429652a39d003a3e0aa0.jpg',
     customerFooter: 'https://0wlrsgrnxygpaqsuekgapipp_non2jhzqw6lly0gr6o.canva-cdn.email/42d135d3eb34f2fe56e069984a1c33b0.jpg',
@@ -34,7 +36,9 @@ function doPost(e) {
     const data = parseRequest_(e);
 
     // 1. solo il sito (che conosce il segreto) può usare questo indirizzo
-    const secret = PropertiesService.getScriptProperties().getProperty('DEMO_SECRET');
+    // accetta anche il nome usato nel sito (DEMO_WEBHOOK_SECRET), così un nome "sbagliato" non blocca il modulo
+    const props = PropertiesService.getScriptProperties();
+    const secret = props.getProperty('DEMO_SECRET') || props.getProperty('DEMO_WEBHOOK_SECRET');
     if (!secret || data.secret !== secret) return json_({ ok: false, error: 'unauthorized' });
 
     // 2. campo trappola per i bot: risposta "ok" ma nessuna email
@@ -51,6 +55,9 @@ function doPost(e) {
     // 5. email a sales (obbligatoria) e conferma al cliente
     sendToSales_(d);
     sendToCustomer_(d);
+
+    // 6. lead nel CRM (vtiger, workflow). Se fallisce le email sono già partite: si registra solo l'errore.
+    sendToCrm_(d);
 
     return json_({ ok: true });
   } catch (err) {
@@ -152,6 +159,77 @@ function sendToCustomer_(d) {
     htmlBody: customerHtml_(d),
     body: customerText_(d),
   });
+}
+
+/* ------------------------------------------------------------------ */
+/* CRM vtiger: invia la richiesta al workflow                           */
+/* Proprietà dello script VTIGER_HANDLER_URL = indirizzo shorturl.php   */
+/* del workflow (…&workflow_id=29). Se manca, il passaggio è saltato.   */
+/* ------------------------------------------------------------------ */
+
+function sendToCrm_(d) {
+  const url = PropertiesService.getScriptProperties().getProperty('VTIGER_HANDLER_URL');
+  if (!url) return;
+  try {
+    const res = UrlFetchApp.fetch(url, {
+      method: 'post',
+      payload: crmFields_(d), // inviato come modulo (application/x-www-form-urlencoded)
+      followRedirects: true,
+      muteHttpExceptions: true,
+    });
+    const code = res.getResponseCode();
+    const text = res.getContentText();
+    // risposta attesa: {"result":"ok",...}; ACCESS_DENIED = chiave o IP non autorizzati nell'HTTP Handler
+    let out = null;
+    try { out = JSON.parse(text); } catch (e) { /* non JSON */ }
+    if (code !== 200 || !out || out.result !== 'ok') console.error('CRM: lead NON creato — HTTP ' + code + ': ' + text.slice(0, 300));
+    else console.log('CRM: lead creato');
+  } catch (err) {
+    console.error('CRM: invio non riuscito — ' + (err && err.message ? err.message : err));
+  }
+}
+
+/* Chiavi con i nomi esatti letti dal workflow 29 "HTTP CREATE LEADS" ($env["..."]), maiuscole comprese,
+   le stesse dello script KORE: un nome sbagliato non dà errore, crea il lead con il campo vuoto. */
+function crmFields_(d) {
+  // prima parola = nome, il resto = cognome (come KORE)
+  const parts = d.contact.split(/\s+/);
+  const firstName = parts.length > 1 ? parts.shift() : '';
+  const lastName = parts.join(' ') || d.contact;
+
+  const lines = [
+    '>>> RICHIESTA DAL FORM ' + CONFIG.CRM_FORM_NAME + ' <<<',
+    '',
+    'Settore: ' + d.sector,
+    'Ruolo: ' + d.role,
+    'Interesse principale: ' + d.interest,
+  ];
+  if (d.plan) {
+    lines.push('Piano selezionato: ' + d.plan.name + (d.plan.fee ? ' (' + d.plan.fee + ')' : ''));
+    d.plan.rows.forEach(function (r) { lines.push('  ' + r[0] + ': ' + r[1]); });
+  }
+  lines.push('', "Messaggio / caso d'uso:", d.message, '',
+    'Lingua del sito: ' + (d.lang === 'en' ? 'inglese' : 'italiano') + ' · Ricevuta il ' + formatDate_(d.submittedAt));
+
+  return {
+    name: firstName,
+    last_name: lastName,
+    Email: d.email,
+    telefono: d.phone,   // il workflow toglie il +39 e scrive "tel"...
+    tel: d.phone,        // ...mandato anche diretto, come fa KORE
+    company: d.company,
+    description: lines.join('\n'),
+    source: CONFIG.CRM_LEAD_SOURCE,
+  };
+}
+
+/* Prova dall'editor: esegui testCrm() per mandare SOLO al CRM un lead di prova (nessuna email). */
+function testCrm() {
+  sendToCrm_(clean_({
+    company: 'Alfa Srl (TEST)', contact: 'Mario Rossi', email: 'test@example.com',
+    phone: '+393471234567', sector: 'Credito al consumo', role: 'Responsabile operations',
+    interest: 'Piano Business', message: 'Lead di prova dal sito ARGO.', consent: true, lang: 'it',
+  }));
 }
 
 /* ------------------------------------------------------------------ */
@@ -334,7 +412,8 @@ function json_(obj) {
 /* ------------------------------------------------------------------ */
 
 function testSend() {
-  const secret = PropertiesService.getScriptProperties().getProperty('DEMO_SECRET');
+  const props = PropertiesService.getScriptProperties();
+  const secret = props.getProperty('DEMO_SECRET') || props.getProperty('DEMO_WEBHOOK_SECRET');
   const res = doPost({
     postData: {
       contents: JSON.stringify({
